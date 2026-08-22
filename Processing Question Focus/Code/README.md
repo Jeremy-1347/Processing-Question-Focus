@@ -42,6 +42,18 @@ welcome → instructions → 练习(16题, 随机) → break → 其中一个平
 
 ---
 
+## 语料设计 · Stimuli Design
+
+| Variable | Context Sentence | Target Sentence |
+|------|------|
+| Verum focus | 小明想吃葡萄吗？ | 她说她想吃葡萄。|
+| Corrective focus | 小明想吃香蕉吗？ |她说她想吃葡萄。 |
+| Disjunction focus | 小明想吃葡萄还是香蕉？ | 她说她想吃葡萄。|
+| Wh-focus| 小明说了什么 |她说她想吃葡萄。|
+| 标签格式 Label format | `Group_X_Condition_Y_SZZ`（实验）/ `p_Group_X_Condition_Y_SZZ`（练习） |
+
+---
+
 ## 仓库结构 · Repository Structure
 
 | 文件 File | 说明 Description |
@@ -108,21 +120,6 @@ python convert_to_pcibex.py        # xlsx 模板 → PCIbex CSV
   `[mean − 2.5·SD, mean + 2.5·SD]` 内的试次。
 - 输出裁剪前后的 `N / Mean / SD / SE` 汇总，以及被剔除比例。
 
-分析使用 R + `tidyverse` 实现（基于 RT 的区域级数据，如 `Exp1_Region2.csv`、
-`Exp3_Region5.csv`）。**该 R 脚本当前未纳入本仓库**（位于仓库外的数据分析目录）；
-如需将其一并开源，可整理为参数化的 `analysis/trim_rt.R` 后提交。
-
----
-
-## 依赖总览 · Dependencies
-
-| 用途 | 依赖 |
-|------|------|
-| 生成/转换刺激 | Python 3, `openpyxl` |
-| 运行实验 | 一个 PCIbex Farm 账号 + 自定义 `Maze` 控制器 |
-| 数据裁剪 | R, `tidyverse` |
-
----
 
 ## 注意事项 · Notes & Caveats
 
@@ -133,30 +130,4 @@ python convert_to_pcibex.py        # xlsx 模板 → PCIbex CSV
 
 ---
 
-## 许可证 · License
-
-尚未指定。如需开源，请添加合适的 `LICENSE` 文件（例如 MIT 或 CC-BY 4.0）。
-
----
-
-## 引用 · Citation
-
-如果本研究对你的工作有帮助，请引用（示例格式，请按实际发表信息修改）：
-
-```bibtex
-@misc{mandarin-maze-pcibex,
-  title  = {Mandarin Maze Reading Task (PCIbex)},
-  author = {jeremyp.},
-  year   = {2026},
-  note   = {Experiment built with PCIbex Farm / PennController},
-  url    = {https://github.com/<your-username>/<repo>}
-}
-```
-
----
-
-## 致谢 · Acknowledgements
-
-- 实验框架基于 [PCIbex Farm](https://pcibex.net/) / [PennController](https://www.pcibex.net/documentation/)。
-- 迷宫范式方法学参考 Forster, K. I., Guerrera, C., & Elliot, L. (2009). *The maze task: Measuring
-  forced incremental word-by-word processing.* Cognition.
+Cognition.
