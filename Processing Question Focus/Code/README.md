@@ -40,17 +40,19 @@ welcome → instructions → 练习(16题, 随机) → break → 其中一个平
 | 练习项目 Practice | 16 个 |
 | 标签格式 Label format | `Group_X_Condition_Y_SZZ`（实验）/ `p_Group_X_Condition_Y_SZZ`（练习） |
 
----
-
 ## 语料设计 · Stimuli Design
 
-| Variable | Context Sentence | Target Sentence |
-|------|------|
-| Verum focus | 小明想吃葡萄吗？ | 她说她想吃葡萄。|
-| Corrective focus | 小明想吃香蕉吗？ |她说她想吃葡萄。 |
-| Disjunction focus | 小明想吃葡萄还是香蕉？ | 她说她想吃葡萄。|
-| Wh-focus| 小明说了什么 |她说她想吃葡萄。|
-| 标签格式 Label format | `Group_X_Condition_Y_SZZ`（实验）/ `p_Group_X_Condition_Y_SZZ`（练习） |
+本实验操纵**信息结构 / 焦点（focus）**：通过不同的上下文问句实现四种焦点条件，目标句保持一致。
+
+| 焦点条件 Focus Condition | 上下文句 Context Sentence | 目标句 Target Sentence |
+|------|------|------|
+| Verum focus（确证焦点） | 小明想吃葡萄吗？ | 她说她想吃葡萄。 |
+| Corrective focus（纠错焦点） | 小明想吃香蕉吗？ | 她说她想吃葡萄。 |
+| Disjunction focus（析取焦点） | 小明想吃葡萄还是香蕉？ | 她说她想吃葡萄。 |
+| Wh-focus（疑问焦点） | 小明说了什么？ | 她说她想吃葡萄。 |
+
+> **标签格式 Label format**：`Group_X_Condition_Y_SZZ`（实验）/ `p_Group_X_Condition_Y_SZZ`（练习）。详见上方「设计参数」一节。
+
 
 ---
 
