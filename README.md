@@ -131,7 +131,3 @@ python convert_to_pcibex.py        # xlsx 模板 → PCIbex CSV
 - **硬编码路径**：`redistribute_v2.py` 含本地绝对路径，跨机器运行前需修改。
 - **`.bak` 备份文件被忽略**：见 `.gitignore`（`*.bak`、`*.DS_Store`）。
 - **数据为内联**：`main.js` 中所有试次为内联定义；`data_embedded.js` / `data.json` 仅作导出参考。
-
----
-
-Cognition.
