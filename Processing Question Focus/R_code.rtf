@@ -1,0 +1,202 @@
+{\rtf1\ansi\ansicpg936\cocoartf2820
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 # ============================\
+#     Condition-level trimming\
+# ============================\
+\
+if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("tidyverse")\
+library(tidyverse)\
+\
+# ------------ \uc0\u29992 \u25143 \u20462 \u25913 \u21306  ------------\
+path <- "/Users/jeremyp./Desktop/Data Analysis/\uc0\u25968 \u25454 \u65288 \u19978 \u20256 \u29256 \u65289 /Exp1_csv/Exp1_Region2.csv"\
+\
+condition_col <- "Condition"\
+rt_col <- "RTs"\
+subject_col <- "Subject ID"   # \uc0\u34429 \u28982 \u26412 \u33050 \u26412 \u25353  Condition trimming\u65292 \u20294 \u20173 \u38656 \u35201 \
+# ------------------------------------\
+\
+# \uc0\u35835 \u20837 \u25968 \u25454 \
+data <- read_csv(path, col_types = cols(.default = "c")) %>%\
+  mutate(\
+    !!condition_col := as.factor(.data[[condition_col]]),\
+    !!subject_col := as.factor(.data[[subject_col]]),\
+    !!rt_col := as.numeric(.data[[rt_col]])\
+  )\
+\
+# \uc0\u21435 \u38500  NA / \u38750 \u27491  RT\
+data_clean <- data %>%\
+  filter(!is.na(.data[[rt_col]]), .data[[rt_col]] > 0)\
+\
+\
+# ======================================================\
+# A. \uc0\u21076 \u38500 \u21069 \u65306 \u27599 \u20010  Condition \u30340  N / Mean / SD / SE\
+# ======================================================\
+\
+before_summary <- data_clean %>%\
+  group_by(across(all_of(condition_col))) %>%\
+  summarise(\
+    n_before = n(),\
+    mean_before = mean(.data[[rt_col]]),\
+    sd_before = sd(.data[[rt_col]]),\
+    se_before = sd_before / sqrt(n_before),\
+    .groups = "drop"\
+  )\
+\
+\
+# ======================================================\
+# \uc0\u25353  Condition \u20570  \'b12.5 SD trimming\
+# ======================================================\
+\
+trimmed <- data_clean %>%\
+  group_by(across(all_of(condition_col))) %>%\
+  mutate(\
+    meanRT = mean(.data[[rt_col]]),\
+    sdRT   = sd(.data[[rt_col]]),\
+    lower  = meanRT - 2.5 * sdRT,\
+    upper  = meanRT + 2.5 * sdRT\
+  ) %>%\
+  ungroup() %>%\
+  filter(.data[[rt_col]] >= lower & .data[[rt_col]] <= upper)\
+\
+\
+# ======================================================\
+# B. \uc0\u21076 \u38500 \u21518 \u32479 \u35745 \u65306 N / Mean / SD / SE\
+# ======================================================\
+\
+after_summary <- trimmed %>%\
+  group_by(across(all_of(condition_col))) %>%\
+  summarise(\
+    n_after = n(),\
+    mean_after = mean(.data[[rt_col]]),\
+    sd_after = sd(.data[[rt_col]]),\
+    se_after = sd_after / sqrt(n_after),\
+    .groups = "drop"\
+  )\
+\
+\
+# ======================================================\
+# \uc0\u21512 \u24182 \u21076 \u38500 \u21069 \u21518 \u34920 \u26684 \
+# ======================================================\
+\
+summary_full <- before_summary %>%\
+  left_join(after_summary, by = condition_col) %>%\
+  mutate(\
+    removed = n_before - n_after,\
+    removed_pct = removed / n_before * 100\
+  )\
+\
+\
+cat("\\n==============================\\n")\
+cat(" Condition-level trimming summary\\n")\
+cat("==============================\\n\\n")\
+print(summary_full)\
+\
+\
+# ======================================================\
+# C. \uc0\u20445 \u23384  trimming \u21518 \u30340 \u25968 \u25454  & summary\
+# ======================================================\
+\
+write_csv(trimmed, "Exp1_Region1_trimmed_condition.csv")\
+write_csv(summary_full, "Exp1_Region1_trim_summary_condition.csv")\
+\
+cat("\\nSaved files:\\n")\
+cat(" - Exp1_Region1_trimmed_condition.csv (\uc0\u21076 \u38500 \u21518 \u30340  trial-level \u25968 \u25454 )\\n")\
+cat(" - Exp1_Region1_trim_summary_condition.csv (\uc0\u21076 \u38500 \u21069 \u21518 \u32479 \u35745 )\\n")\
+\
+\
+\
+\
+\
+# ============================\
+#     Condition-level trimming\
+# ============================\
+\
+if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("tidyverse")\
+library(tidyverse)\
+\
+# ------------ \uc0\u29992 \u25143 \u20462 \u25913 \u21306  ------------\
+path <- "/Users/jeremyp./Desktop/Data Analysis/\uc0\u25968 \u25454 \u65288 \u19978 \u20256 \u29256 \u65289 /Exp3_csv/Exp3_Region5.csv"\
+\
+condition_col <- "Condition"\
+rt_col <- "RTs"\
+subject_col <- "Subject_ID"\
+save_dir <- "/Users/jeremyp./Desktop/Data_cleaned"\
+# ------------------------------------\
+\
+# \uc0\u35835 \u20837 \u25968 \u25454 \
+data <- read_csv(path, col_types = cols(.default = "c")) %>%\
+  mutate(\
+    !!condition_col := as.factor(.data[[condition_col]]),\
+    !!subject_col := as.factor(.data[[subject_col]]),\
+    !!rt_col := as.numeric(.data[[rt_col]])\
+  )\
+\
+# \uc0\u21435 \u38500  NA / \u38750 \u27491  RT\
+data_clean <- data %>%\
+  filter(!is.na(.data[[rt_col]]), .data[[rt_col]] > 0)\
+\
+# ======================================================\
+# A. \uc0\u21076 \u38500 \u21069 \u32479 \u35745 \
+# ======================================================\
+before_summary <- data_clean %>%\
+  group_by(across(all_of(condition_col))) %>%\
+  summarise(\
+    n_before = n(),\
+    mean_before = mean(.data[[rt_col]]),\
+    sd_before = sd(.data[[rt_col]]),\
+    se_before = sd_before / sqrt(n_before),\
+    .groups = "drop"\
+  )\
+\
+# ======================================================\
+# Condition \'b12.5 SD trimming\
+# ======================================================\
+trimmed <- data_clean %>%\
+  group_by(across(all_of(condition_col))) %>%\
+  mutate(\
+    meanRT = mean(.data[[rt_col]], na.rm = TRUE),\
+    sdRT   = sd(.data[[rt_col]], na.rm = TRUE),\
+    lower  = meanRT - 2.5 * sdRT,\
+    upper  = meanRT + 2.5 * sdRT\
+  ) %>%\
+  ungroup() %>%\
+  filter(.data[[rt_col]] >= lower & .data[[rt_col]] <= upper)\
+\
+# ======================================================\
+# B. \uc0\u21076 \u38500 \u21518 \u32479 \u35745 \
+# ======================================================\
+after_summary <- trimmed %>%\
+  group_by(across(all_of(condition_col))) %>%\
+  summarise(\
+    n_after = n(),\
+    mean_after = mean(.data[[rt_col]]),\
+    sd_after = sd(.data[[rt_col]]),\
+    se_after = sd_after / sqrt(n_after),\
+    .groups = "drop"\
+  )\
+\
+# ======================================================\
+# \uc0\u21512 \u24182 \u21069 \u21518  summary\
+# ======================================================\
+summary_full <- before_summary %>%\
+  left_join(after_summary, by = condition_col) %>%\
+  mutate(\
+    removed = n_before - n_after,\
+    removed_pct = removed / n_before * 100\
+  )\
+\
+# ======================================================\
+# C. \uc0\u20445 \u23384 \u36755 \u20986 \
+# ======================================================\
+write_csv(trimmed,\
+          file.path(save_dir, "Exp3_Region5_trimmed_condition.csv"))\
+\
+write_csv(summary_full,\
+          file.path(save_dir, "Exp3_Region5_trim_summary_condition.csv"))\
+\
+}
